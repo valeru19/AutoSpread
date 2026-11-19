@@ -1,0 +1,38 @@
+[tool.poetry]
+name = "autospread"
+version = "0.1.0"
+description = "Semi-automated Bybit P2P arbitrage system"
+authors = ["Valeru"]
+readme = "README.md"
+packages = [{ include = "app" }]
+
+[tool.poetry.dependencies]
+python = ">=3.12,<3.14"
+dishka = "^1.6.0"
+fastapi = "^0.115.0"
+uvicorn = { extras = ["standard"], version = "^0.34.0" }
+aiogram = "^3.17.0"
+sqlalchemy = { extras = ["asyncio"], version = "^2.0.36" }
+alembic = "^1.14.0"
+asyncpg = "^0.30.0"
+httpx = "^0.28.0"
+redis = "^5.2.0"
+pydantic = "^2.10.0"
+pydantic-settings = "^2.7.0"
+structlog = "^24.4.0"
+tenacity = "^9.0.0"
+aiolimiter = "^1.2.0"
+psycopg = {extras = ["binary"], version = "^3.3.9"}
+
+[tool.poetry.group.dev.dependencies]
+pytest = "^8.3.0"
+pytest-asyncio = "^0.25.0"
+ruff = "^0.17.5"
+
+[build-system]
+requires = ["poetry-core"]
+build-backend = "poetry.core.masonry.api"
+
+[tool.pytest.ini_options]
+asyncio_mode = "auto"
+pythonpath = ["."]

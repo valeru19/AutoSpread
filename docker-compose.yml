@@ -1,0 +1,62 @@
+# Infra for local development: PostgreSQL 16 + Redis 7 + volume for receipts.
+# App containers (api / worker / bot / gateway) will be added later.
+#
+# Start:  docker compose up -d
+# Stop:   docker compose down
+# Logs:   docker compose logs -f
+#
+# If Windows service postgresql-x64-16 already occupies 5432, stop it
+# or change the host port below (e.g. "5433:5432") and update DATABASE_URL.
+
+name: autospread
+
+services:
+  postgres:
+    image: postgres:16
+    container_name: autospread-postgres
+    restart: unless-stopped
+    environment:
+      POSTGRES_USER: autospread
+      POSTGRES_PASSWORD: autospread
+      POSTGRES_DB: autospread
+      TZ: UTC
+    ports:
+      - "5432:5432"
+    volumes:
+      - autospread_pg_data:/var/lib/postgresql/data
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U autospread -d autospread"]
+      interval: 5s
+      timeout: 5s
+      retries: 10
+      start_period: 10s
+    networks:
+      - autospread_net
+
+  redis:
+    image: redis:7
+    container_name: autospread-redis
+    restart: unless-stopped
+    command: ["redis-server", "--appendonly", "yes"]
+    ports:
+      - "6379:6379"
+    volumes:
+      - autospread_redis_data:/data
+    healthcheck:
+      test: ["CMD", "redis-cli", "ping"]
+      interval: 5s
+      timeout: 3s
+      retries: 10
+      start_period: 5s
+    networks:
+      - autospread_net
+
+volumes:
+  autospread_pg_data:
+  autospread_redis_data:
+  # Receipts / screenshots (mounted into api-app and worker later)
+  autospread_files:
+
+networks:
+  autospread_net:
+    driver: bridge

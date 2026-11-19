@@ -1,0 +1,6 @@
+# Local override: Windows postgresql-x64-16 already owns IPv4 :5432.
+# Publish Docker Postgres on 5433 so Alembic/app can reach the container.
+services:
+  postgres:
+    ports:
+      - "5433:5432"
