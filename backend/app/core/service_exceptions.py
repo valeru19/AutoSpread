@@ -29,3 +29,10 @@ class ConcurrentModificationError(AppException):
 
     def __init__(self, message: str = "Concurrent modification") -> None:
         super().__init__(message)
+
+
+class MarginInputError(AppException):
+    """Некорректный вход вызова MarginService (не бизнес-отказ)."""
+
+    def __init__(self, message: str = "Invalid margin input") -> None:
+        super().__init__(message)
