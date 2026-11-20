@@ -36,3 +36,10 @@ class MarginInputError(AppException):
 
     def __init__(self, message: str = "Invalid margin input") -> None:
         super().__init__(message)
+
+
+class KillSwitchError(AppException):
+    """Переход запрещён включённым kill switch (ack_open)."""
+
+    def __init__(self, message: str = "Kill switch active") -> None:
+        super().__init__(message)
